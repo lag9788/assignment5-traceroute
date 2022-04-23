@@ -47,12 +47,12 @@ def build_packet():
     # then finally the complete packet was sent to the destination.
 
     # Make the header in a similar way to the ping exercise.
-    # Append checksum to the header.
-
     myChecksum = 0
-    myID = os.getpid() & 0xFFFF  # Return current process id
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
+    pID = os.getpid() & 0xFFFF  # Return current process id
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, pID, 1)
     data = struct.pack("d", time.time())
+          
+    # Append checksum to the header.
     myChecksum = checksum(header + data)
 
     if sys.platform == 'darwin':
@@ -61,7 +61,7 @@ def build_packet():
     else:
         myChecksum = htons(myChecksum)
 
-    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
+    header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, pID, 1)
 
 
     # Don’t send the packet yet , just return the final packet in this function.
@@ -91,7 +91,7 @@ def get_route(hostname):
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
-            tracelist1 = [] 
+
             try:
                 d = build_packet()
                 mySocket.sendto(d, (hostname, 0))
@@ -99,6 +99,7 @@ def get_route(hostname):
                 startedSelect = time.time()
                 whatReady = select.select([mySocket], [], [], timeLeft)
                 howLongInSelect = (time.time() - startedSelect)
+                
                 if whatReady[0] == []: # Timeout
                     tracelist1.append(str(ttl))
                     tracelist1.append("*")
@@ -110,6 +111,7 @@ def get_route(hostname):
                 recvPacket, addr = mySocket.recvfrom(1024)
                 timeReceived = time.time()
                 timeLeft = timeLeft - howLongInSelect
+                
                 if timeLeft <= 0:
                     tracelist1.append(str(ttl))
                     tracelist1.append("*")
@@ -131,13 +133,21 @@ def get_route(hostname):
                 #Fill in end
                 try: #try to fetch the hostname
                     #Fill in start
-                    hostname = gethostbyaddr(addr[0])[0]
+                    src_hostname = gethostbyaddr(addr[0])[0]
 
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
-                    hostname = "Hostname not returnable."
+                    src_hostname = "Hostname not returnable."
+
+                    tracelist1.append(str(ttl))
+                    tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
+                    tracelist1.append(addr[0])
+                    tracelist1.append(src_hostname)
+
+                    tracelist2.append(tracelist1)
                     #Fill in end
+                    continue
 
                 if types == 11:
                     bytes = struct.calcsize("d")
@@ -147,7 +157,7 @@ def get_route(hostname):
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
-                    tracelist1.append(hostname)
+                    tracelist1.append(src_hostname)
 
                     tracelist2.append(tracelist1)
 
@@ -160,7 +170,7 @@ def get_route(hostname):
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
-                    tracelist1.append(hostname)
+                    tracelist1.append(src_hostname)
 
                     tracelist2.append(tracelist1)
                     #Fill in end
@@ -172,7 +182,7 @@ def get_route(hostname):
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
-                    tracelist1.append(hostname) 
+                    tracelist1.append(src_hostname) 
 
                     tracelist2.append(tracelist1)    
                     #print(tracelist2)               
@@ -185,10 +195,11 @@ def get_route(hostname):
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
-                    tracelist1.append(hostname) 
+                    tracelist1.append(src_hostname) 
                     tracelist1.append("Error Occurred.")
                     
                     tracelist2.append(tracelist1)
+                    return tracelist2
                     #Fill in end
                 break
             finally:
