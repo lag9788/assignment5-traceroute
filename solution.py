@@ -49,7 +49,7 @@ def build_packet():
     # Make the header in a similar way to the ping exercise.
     # Append checksum to the header.
 
-    ID = os.getpid() & 0xFFFF  # Return the current process i
+    ID = os.getpid() & 0xFFFF  # Return current process id
     myChecksum = 0
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, ID, 1)
     data = struct.pack("d", time.time())
@@ -126,7 +126,7 @@ def get_route(hostname):
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
-                    hostname = ("Hostname not found.")
+                    hostname = "Hostname not returnable."
                     #Fill in end
 
                 if types == 11:
@@ -135,7 +135,10 @@ def get_route(hostname):
                     bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here
-                    tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000))+"ms", addr[0]),hostname)
+                    tracelist1.append(str(ttl))
+                    tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
+                    tracelist1.append(addr[0])
+                    tracelist1.append(hostname)
                     tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 3:
@@ -143,7 +146,10 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here 
-                    tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000))+"ms", addr[0]),hostname)
+                    tracelist1.append(str(ttl))
+                    tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
+                    tracelist1.append(addr[0])
+                    tracelist1.append(hostname)
                     tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 0:
@@ -151,7 +157,10 @@ def get_route(hostname):
                     timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here and return your list if your destination IP is met
-                    tracelist1.append((str(ttl), str(round((timeReceived - t) * 1000))+"ms", addr[0],hostname))               
+                    tracelist1.append(str(ttl))
+                    tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
+                    tracelist1.append(addr[0])
+                    tracelist1.append(hostname)            
                     tracelist2.append(tracelist1)
                     
                     #print("List 2-pre")
