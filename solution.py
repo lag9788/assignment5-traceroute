@@ -63,6 +63,7 @@ def build_packet():
 
     header = struct.pack("bbHHh", ICMP_ECHO_REQUEST, 0, myChecksum, myID, 1)
 
+
     # Don’t send the packet yet , just return the final packet in this function.
     #Fill in end
 
@@ -73,7 +74,7 @@ def build_packet():
 
 def get_route(hostname):
     timeLeft = TIMEOUT
-    #tracelist1 = [] #This is your list to use when iterating through each trace 
+    tracelist1 = [] #This is your list to use when iterating through each trace 
     tracelist2 = [] #This is your list to contain all traces
 
     for ttl in range(1,MAX_HOPS):
@@ -82,13 +83,15 @@ def get_route(hostname):
 
             #Fill in start
             # Make a raw socket named mySocket
+
             icmp_val = getprotobyname("icmp")
             mySocket = socket(AF_INET, SOCK_RAW, icmp_val)
+
             #Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
-            tracelist1 = [] #clearing tracelist1
+            tracelist1 = [] 
             try:
                 d = build_packet()
                 mySocket.sendto(d, (hostname, 0))
@@ -121,13 +124,15 @@ def get_route(hostname):
             else:
                 #Fill in start
                 #Fetch the icmp type from the IP packet
+
                 ICMP_Header = recvPacket[20:28]
                 types, code, checksum, packID, seqNo = struct.unpack("bbHHh", ICMP_Header)
+
                 #Fill in end
                 try: #try to fetch the hostname
                     #Fill in start
                     hostname = gethostbyaddr(addr[0])[0]
-                    #print(hostname)
+
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
@@ -145,6 +150,7 @@ def get_route(hostname):
                     tracelist1.append(hostname)
 
                     tracelist2.append(tracelist1)
+
                     #Fill in end
                 elif types == 3:
                     bytes = struct.calcsize("d")
@@ -168,16 +174,14 @@ def get_route(hostname):
                     tracelist1.append(addr[0])
                     tracelist1.append(hostname) 
 
-                    tracelist2.append(tracelist1)
-                    
- #                   if addr[0] == destAddr:
-  #                      #print("List 2 -  exp:" + destAddr)
-                    #print(tracelist2)
+                    tracelist2.append(tracelist1)    
+                    #print(tracelist2)               
                     return tracelist2
                     #Fill in end
                 else:
                     #Fill in start
                     #If there is an exception/error to your if statements, you should append that to your list here
+                    
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
@@ -185,13 +189,13 @@ def get_route(hostname):
                     tracelist1.append("Error Occurred.")
                     
                     tracelist2.append(tracelist1)
-
-                    #print(tracelist2)
-                    return tracelist2
                     #Fill in end
                 break
             finally:
-                mySocket.close()
+                mySocket.close()    
+    
+    #print(tracelist2)
+    return tracelist2
 
 if __name__ == '__main__':
     get_route("google.co.il")
