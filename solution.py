@@ -181,12 +181,17 @@ def get_route(hostname):
                     tracelist1.append(str(ttl))
                     tracelist1.append("*")
                     tracelist1.append("Error Occurred.")
+
+                    tracelist2.append(tracelist1)
+
+                    print(tracelist2)
+                    return tracelist2
                     #Fill in end
                 break
             finally:
                 mySocket.close()
 
-    #return tracelist2
+    return tracelist2
 
 if __name__ == '__main__':
     get_route("google.co.il")
