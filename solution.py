@@ -169,11 +169,11 @@ def get_route(hostname):
                     #print("List 2-pre")
                     #print(tracelist2)
                     #print("List 1")
-                    print(tracelist1)
+                    #print(tracelist1)
 
                     if addr[0] == destAddr:
                         #print("List 2 -  exp:" + destAddr)
-                        #print(tracelist2)
+                        print(tracelist2)
                         return tracelist2
                     #Fill in end
                 else:
