@@ -133,16 +133,16 @@ def get_route(hostname):
                 #Fill in end
                 try: #try to fetch the hostname
                     #Fill in start
-                    src_hostname = gethostbyaddr(addr[0])[0]
+                    src_hostname = str(gethostbyaddr(addr[0])[0])
 
                     #Fill in end
                 except herror:   #if the host does not provide a hostname
                     #Fill in start
-                    src_hostname = "Hostname not returnable."
+                    src_hostname = str("Hostname not returnable.")
 
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
-                    tracelist1.append(addr[0])
+                    tracelist1.append(str(addr[0]))
                     tracelist1.append(src_hostname)
 
                     tracelist2.append(tracelist1)
@@ -156,7 +156,7 @@ def get_route(hostname):
                     #You should add your responses to your lists here
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
-                    tracelist1.append(addr[0])
+                    tracelist1.append(str(addr[0]))
                     tracelist1.append(src_hostname)
 
                     tracelist2.append(tracelist1)
@@ -169,7 +169,7 @@ def get_route(hostname):
                     #You should add your responses to your lists here 
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
-                    tracelist1.append(addr[0])
+                    tracelist1.append(str(addr[0]))
                     tracelist1.append(src_hostname)
 
                     tracelist2.append(tracelist1)
@@ -181,7 +181,7 @@ def get_route(hostname):
                     #You should add your responses to your lists here and return your list if your destination IP is met
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
-                    tracelist1.append(addr[0])
+                    tracelist1.append(str(addr[0]))
                     tracelist1.append(src_hostname) 
 
                     tracelist2.append(tracelist1)    
@@ -194,11 +194,12 @@ def get_route(hostname):
                     
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
-                    tracelist1.append(addr[0])
+                    tracelist1.append(str(addr[0]))
                     tracelist1.append(src_hostname) 
                     tracelist1.append("Error Occurred.")
                     
                     tracelist2.append(tracelist1)
+                    #print(tracelist2) 
                     return tracelist2
                     #Fill in end
                 break
