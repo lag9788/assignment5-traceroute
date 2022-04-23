@@ -140,7 +140,7 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here
                     tracelist1.append(str(ttl))
-                    tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
+                    tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
                     tracelist1.append(hostname)
 
@@ -152,7 +152,7 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here 
                     tracelist1.append(str(ttl))
-                    tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
+                    tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
                     tracelist1.append(hostname)
 
@@ -164,7 +164,7 @@ def get_route(hostname):
                     #Fill in start
                     #You should add your responses to your lists here and return your list if your destination IP is met
                     tracelist1.append(str(ttl))
-                    tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
+                    tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
                     tracelist1.append(addr[0])
                     tracelist1.append(hostname) 
 
@@ -179,9 +179,11 @@ def get_route(hostname):
                     #Fill in start
                     #If there is an exception/error to your if statements, you should append that to your list here
                     tracelist1.append(str(ttl))
-                    tracelist1.append("*")
+                    tracelist1.append(str(round((timeReceived - t) * 1000,0))+"ms")
+                    tracelist1.append(addr[0])
+                    tracelist1.append(hostname) 
                     tracelist1.append("Error Occurred.")
-
+                    
                     tracelist2.append(tracelist1)
 
                     print(tracelist2)
@@ -191,7 +193,7 @@ def get_route(hostname):
             finally:
                 mySocket.close()
 
-    return tracelist2
+    #return tracelist2
 
 if __name__ == '__main__':
     get_route("google.co.il")
