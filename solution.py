@@ -172,7 +172,7 @@ def get_route(hostname):
                     
  #                   if addr[0] == destAddr:
   #                      #print("List 2 -  exp:" + destAddr)
-                    print(tracelist2)
+                    #print(tracelist2)
                     return tracelist2
                     #Fill in end
                 else:
@@ -186,14 +186,12 @@ def get_route(hostname):
                     
                     tracelist2.append(tracelist1)
 
-                    print(tracelist2)
+                    #print(tracelist2)
                     return tracelist2
                     #Fill in end
                 break
             finally:
                 mySocket.close()
-
-    #return tracelist2
 
 if __name__ == '__main__':
     get_route("google.co.il")
