@@ -88,6 +88,7 @@ def get_route(hostname):
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
+            tracelist1 = []
             try:
                 d = build_packet()
                 mySocket.sendto(d, (hostname, 0))
@@ -131,14 +132,14 @@ def get_route(hostname):
 
                 if types == 11:
                     bytes = struct.calcsize("d")
-                    timeSent = struct.unpack("d", recvPacket[28:28 +
-                    bytes])[0]
+                    timeSent = struct.unpack("d", recvPacket[28:28 + bytes])[0]
                     #Fill in start
                     #You should add your responses to your lists here
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
                     tracelist1.append(addr[0])
                     tracelist1.append(hostname)
+
                     tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 3:
@@ -150,6 +151,7 @@ def get_route(hostname):
                     tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
                     tracelist1.append(addr[0])
                     tracelist1.append(hostname)
+
                     tracelist2.append(tracelist1)
                     #Fill in end
                 elif types == 0:
@@ -160,7 +162,8 @@ def get_route(hostname):
                     tracelist1.append(str(ttl))
                     tracelist1.append(str(round((timeReceived - t) * 1000))+"ms")
                     tracelist1.append(addr[0])
-                    tracelist1.append(hostname)            
+                    tracelist1.append(hostname) 
+
                     tracelist2.append(tracelist1)
                     
                     #print("List 2-pre")
@@ -169,7 +172,8 @@ def get_route(hostname):
                     print(tracelist1)
 
                     if addr[0] == destAddr:
-                        #print("List 2")
+                        #print("List 2 -  exp:" + destAddr)
+                        #print(tracelist2)
                         return tracelist2
                     #Fill in end
                 else:
