@@ -91,7 +91,7 @@ def get_route(hostname):
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
             mySocket.settimeout(TIMEOUT)
-
+            tracelist1 = []
             try:
                 d = build_packet()
                 mySocket.sendto(d, (hostname, 0))
